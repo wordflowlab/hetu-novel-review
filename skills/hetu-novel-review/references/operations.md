@@ -17,3 +17,10 @@
 | compare_versions | 比较专业修订 | object_id, from_revision, to_revision | read |
 | export_project | 导出固定报告 | object_id, format | read |
 | get_operation | 回读原操作 | operation_key | read |
+| put_state_event | 保存有据状态事件 | object_id, expected_revision, expected_sha256, operation_key, state_event | managed_write |
+| preview_rule_run | 执行固定规则与状态检查 | object_id, run | read |
+| put_rule_run | 保存可重现规则运行 | object_id, expected_revision, expected_sha256, operation_key, run | managed_write |
+| get_rule_run | 重现固定规则运行 | object_id, run_id | read |
+| preview_recheck | 比较新旧运行与问题 | object_id, old_run_id, run | read |
+| save_depth | 保存明确专业深化结构 | object_id, expected_revision, expected_sha256, operation_key, depth | managed_write |
+| inspect_basis | 读取同作品固定专业依据 | object_id, basis_index | read |

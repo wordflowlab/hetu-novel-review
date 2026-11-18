@@ -1,3 +1,5 @@
+import { inspectBasis } from "./basis.ts";
+import { depthWrites, newDepth, readDepth, runRules } from "../domain/depth.ts";
 import { createHash } from "node:crypto";
 import type { BackendContext, ObjectResult } from "../../vendor/hetu-sdk.ts";
 import {
@@ -49,6 +51,8 @@ export class Project {
   }
   async check(p: any, refs: any[]) {
     validate(p);
+    for (const ref of p.depth?.basis_refs ?? [])
+      await inspectBasis(this.store, ref);
     need(
       sourceIndices(p).every(
         (i) => Number.isInteger(i) && i >= 0 && i < refs.length,
@@ -78,6 +82,34 @@ export class Project {
         );
   }
   async save(input: any, p: any, old?: ObjectResult) {
+    need(
+      !(old?.object.content as any)?.depth || p.depth,
+      "不能丢弃已有深化结构；请读取当前完整对象。",
+      "hetu.stale_schema",
+    );
+    const previous: any = old?.object.content;
+    if (previous?.depth?.runs.length) {
+      for (const run of previous.depth.runs) {
+        need(
+          p.depth?.runs.some(
+            (r: any) => r.id === run.id && canonical(r) === canonical(run),
+          ),
+          "固定运行不可改写；请另建运行。",
+        );
+        for (const id of run.state_event_ids)
+          need(
+            p.depth.state_events.some(
+              (e: any) =>
+                e.id === id &&
+                canonical(e) ===
+                  canonical(
+                    previous.depth.state_events.find((v: any) => v.id === id),
+                  ),
+            ),
+            "已被运行引用的状态不可改写；请另建事件。",
+          );
+      }
+    }
     const refs = input.source_refs ?? old?.object.source_refs ?? [];
     await this.check(p, refs);
     return this.store.save(input, p, old);
@@ -127,6 +159,19 @@ export class Project {
           : await this.store.get(i.object_id, i.revision),
         p: any = clone(r.object.content);
       if (effects.has(action)) {
+        if (action === "save_depth" || depthWrites[action]) {
+          if (action === "save_depth") p.depth = i.depth;
+          else {
+            p.depth ??= newDepth();
+            const [field, key] = depthWrites[action];
+            const at = p.depth[field].findIndex((v: any) => v.id === i[key].id);
+            if (at < 0) p.depth[field].push(i[key]);
+            else p.depth[field][at] = i[key];
+          }
+          if (action === "put_rule_run")
+            runRules(p, i.run, await this.sources(r));
+          return await this.save(i, p, r);
+        }
         if (action === "set_disposition") {
           const issue = p.issues.find((x: any) => x.id === i.issue_id);
           need(issue, "问题不存在。");
@@ -159,6 +204,15 @@ export class Project {
         return await this.save(i, p, r);
       }
       if (action === "get_project") return success(r);
+      if (action === "inspect_basis") {
+        const ref = p.depth?.basis_refs?.[i.basis_index];
+        need(ref, "专业依据索引不存在。");
+        return success({
+          project_ref: fixed(r),
+          basis_ref: ref,
+          record: await inspectBasis(this.store, ref),
+        });
+      }
       if (action === "get_coverage")
         return success({ project_ref: fixed(r), ...coverage(p) });
       if (action === "export_project") {
@@ -200,6 +254,9 @@ export class Project {
         need(index < sources.length, "来源索引越界。");
         return sources[index];
       };
+      const depthResult = readDepth(p, action, i, sources);
+      if (depthResult !== undefined)
+        return success({ project_ref: fixed(r), ...depthResult });
       if (action === "get_source")
         return success({ project_ref: fixed(r), ...source(i.source_index) });
       if (action === "build_review_context") {

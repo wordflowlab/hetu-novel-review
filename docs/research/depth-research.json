@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-18",
+  "references": [
+    {
+      "repository": "zhangzhend0ng/canonkeeper",
+      "commit": "ab0c1ffde2819b3a9ae36a13902266b0a2e1e726",
+      "path": "canonkeeper/rules/engine.py",
+      "sha256": "5c1518a36f2b681467cd4df796a055b611083af76f6783a2b25754d9b9d2639f",
+      "read_scope": "本轮定向源码／方法复核，未执行上游代码",
+      "code_copied": false
+    }
+  ],
+  "limitations": [
+    "独立实现，未主张与上游全功能相同",
+    "未以统计或模型来源评分判断文学质量"
+  ]
+}

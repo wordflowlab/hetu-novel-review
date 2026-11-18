@@ -2,7 +2,7 @@
   "manifest_version": 1,
   "host_api": "1",
   "id": "org.wordflowlab.novel-review",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "display": {
     "zh-CN": "小说审校",
     "en": "Novel Review"
@@ -262,6 +262,372 @@
               "required": [
                 "punctuation",
                 "forbidden_terms"
+              ]
+            },
+            "depth": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "version": {
+                  "const": 1
+                },
+                "state_events": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "entity_ref": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "order": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 1000000
+                      },
+                      "layer": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "branch": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "basis": {
+                        "enum": [
+                          "observed",
+                          "planned",
+                          "hypothesis"
+                        ]
+                      },
+                      "kind": {
+                        "enum": [
+                          "balance",
+                          "item",
+                          "condition",
+                          "knowledge"
+                        ]
+                      },
+                      "action": {
+                        "enum": [
+                          "set",
+                          "add",
+                          "acquire",
+                          "transfer",
+                          "destroy",
+                          "assert",
+                          "learn",
+                          "believe",
+                          "forget",
+                          "use"
+                        ]
+                      },
+                      "key": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "number": {
+                        "anyOf": [
+                          {
+                            "type": "number",
+                            "minimum": -1000000000,
+                            "maximum": 1000000000
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "value": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 1000
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "unit": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "from": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "to": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "exception": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 4000
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "evidence": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "source_index": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 99
+                            },
+                            "byte_start": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 100000000
+                            },
+                            "byte_end": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 100000000
+                            },
+                            "quote": {
+                              "type": "string",
+                              "minLength": 0,
+                              "maxLength": 16000
+                            }
+                          },
+                          "required": [
+                            "source_index",
+                            "byte_start",
+                            "byte_end",
+                            "quote"
+                          ]
+                        },
+                        "maxItems": 100
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "entity_ref",
+                      "order",
+                      "layer",
+                      "branch",
+                      "basis",
+                      "kind",
+                      "action",
+                      "key",
+                      "number",
+                      "value",
+                      "unit",
+                      "from",
+                      "to",
+                      "exception",
+                      "evidence"
+                    ]
+                  },
+                  "maxItems": 1000
+                },
+                "runs": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "source_indices": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 99
+                        },
+                        "maxItems": 100
+                      },
+                      "state_event_ids": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 100
+                        },
+                        "maxItems": 500
+                      },
+                      "ruleset": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "version": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "duplicate_min_chars": {
+                            "type": "integer",
+                            "minimum": 2,
+                            "maximum": 200
+                          },
+                          "max_chars": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 1000000
+                          },
+                          "dictionary": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 100
+                                },
+                                "term": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 100
+                                },
+                                "replacement": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 100
+                                },
+                                "source": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 500
+                                },
+                                "exceptions": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 200
+                                  },
+                                  "maxItems": 100
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "term",
+                                "replacement",
+                                "source",
+                                "exceptions"
+                              ]
+                            },
+                            "maxItems": 300
+                          },
+                          "punctuation": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "version",
+                          "duplicate_min_chars",
+                          "max_chars",
+                          "dictionary",
+                          "punctuation"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "source_indices",
+                      "state_event_ids",
+                      "ruleset"
+                    ]
+                  },
+                  "maxItems": 200
+                },
+                "basis_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "owner_plugin_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "object_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "revision": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 1000000
+                      },
+                      "sha256": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9]{64}$"
+                      }
+                    },
+                    "required": [
+                      "owner_plugin_id",
+                      "object_id",
+                      "revision",
+                      "sha256"
+                    ]
+                  },
+                  "maxItems": 100
+                }
+              },
+              "required": [
+                "version",
+                "state_events",
+                "runs"
               ]
             }
           },
@@ -591,6 +957,372 @@
                   "required": [
                     "punctuation",
                     "forbidden_terms"
+                  ]
+                },
+                "depth": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "version": {
+                      "const": 1
+                    },
+                    "state_events": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "entity_ref": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "order": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 1000000
+                          },
+                          "layer": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "branch": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "basis": {
+                            "enum": [
+                              "observed",
+                              "planned",
+                              "hypothesis"
+                            ]
+                          },
+                          "kind": {
+                            "enum": [
+                              "balance",
+                              "item",
+                              "condition",
+                              "knowledge"
+                            ]
+                          },
+                          "action": {
+                            "enum": [
+                              "set",
+                              "add",
+                              "acquire",
+                              "transfer",
+                              "destroy",
+                              "assert",
+                              "learn",
+                              "believe",
+                              "forget",
+                              "use"
+                            ]
+                          },
+                          "key": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "number": {
+                            "anyOf": [
+                              {
+                                "type": "number",
+                                "minimum": -1000000000,
+                                "maximum": 1000000000
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "value": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 1000
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "unit": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 100
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "from": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 100
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "to": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 100
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "exception": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 4000
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "evidence": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "source_index": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 99
+                                },
+                                "byte_start": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 100000000
+                                },
+                                "byte_end": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 100000000
+                                },
+                                "quote": {
+                                  "type": "string",
+                                  "minLength": 0,
+                                  "maxLength": 16000
+                                }
+                              },
+                              "required": [
+                                "source_index",
+                                "byte_start",
+                                "byte_end",
+                                "quote"
+                              ]
+                            },
+                            "maxItems": 100
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "entity_ref",
+                          "order",
+                          "layer",
+                          "branch",
+                          "basis",
+                          "kind",
+                          "action",
+                          "key",
+                          "number",
+                          "value",
+                          "unit",
+                          "from",
+                          "to",
+                          "exception",
+                          "evidence"
+                        ]
+                      },
+                      "maxItems": 1000
+                    },
+                    "runs": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "source_indices": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 99
+                            },
+                            "maxItems": 100
+                          },
+                          "state_event_ids": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 100
+                            },
+                            "maxItems": 500
+                          },
+                          "ruleset": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 100
+                              },
+                              "version": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 100
+                              },
+                              "duplicate_min_chars": {
+                                "type": "integer",
+                                "minimum": 2,
+                                "maximum": 200
+                              },
+                              "max_chars": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 1000000
+                              },
+                              "dictionary": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "id": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 100
+                                    },
+                                    "term": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 100
+                                    },
+                                    "replacement": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 100
+                                    },
+                                    "source": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 500
+                                    },
+                                    "exceptions": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "maxLength": 200
+                                      },
+                                      "maxItems": 100
+                                    }
+                                  },
+                                  "required": [
+                                    "id",
+                                    "term",
+                                    "replacement",
+                                    "source",
+                                    "exceptions"
+                                  ]
+                                },
+                                "maxItems": 300
+                              },
+                              "punctuation": {
+                                "type": "boolean"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "version",
+                              "duplicate_min_chars",
+                              "max_chars",
+                              "dictionary",
+                              "punctuation"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "source_indices",
+                          "state_event_ids",
+                          "ruleset"
+                        ]
+                      },
+                      "maxItems": 200
+                    },
+                    "basis_refs": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "owner_plugin_id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "object_id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "revision": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 1000000
+                          },
+                          "sha256": {
+                            "type": "string",
+                            "pattern": "^[a-f0-9]{64}$"
+                          }
+                        },
+                        "required": [
+                          "owner_plugin_id",
+                          "object_id",
+                          "revision",
+                          "sha256"
+                        ]
+                      },
+                      "maxItems": 100
+                    }
+                  },
+                  "required": [
+                    "version",
+                    "state_events",
+                    "runs"
                   ]
                 }
               },
@@ -1161,13 +1893,1151 @@
             "operation_key"
           ]
         }
+      },
+      {
+        "id": "put_state_event",
+        "title": "保存有据状态事件",
+        "effect": "managed_write",
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "expected_revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "expected_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "operation_key": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "state_event": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "entity_ref": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "order": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 1000000
+                },
+                "layer": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "branch": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "basis": {
+                  "enum": [
+                    "observed",
+                    "planned",
+                    "hypothesis"
+                  ]
+                },
+                "kind": {
+                  "enum": [
+                    "balance",
+                    "item",
+                    "condition",
+                    "knowledge"
+                  ]
+                },
+                "action": {
+                  "enum": [
+                    "set",
+                    "add",
+                    "acquire",
+                    "transfer",
+                    "destroy",
+                    "assert",
+                    "learn",
+                    "believe",
+                    "forget",
+                    "use"
+                  ]
+                },
+                "key": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "number": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "minimum": -1000000000,
+                      "maximum": 1000000000
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1000
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "unit": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "from": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "to": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "exception": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 4000
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "evidence": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "source_index": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 99
+                      },
+                      "byte_start": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 100000000
+                      },
+                      "byte_end": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 100000000
+                      },
+                      "quote": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 16000
+                      }
+                    },
+                    "required": [
+                      "source_index",
+                      "byte_start",
+                      "byte_end",
+                      "quote"
+                    ]
+                  },
+                  "maxItems": 100
+                }
+              },
+              "required": [
+                "id",
+                "entity_ref",
+                "order",
+                "layer",
+                "branch",
+                "basis",
+                "kind",
+                "action",
+                "key",
+                "number",
+                "value",
+                "unit",
+                "from",
+                "to",
+                "exception",
+                "evidence"
+              ]
+            }
+          },
+          "required": [
+            "object_id",
+            "expected_revision",
+            "expected_sha256",
+            "operation_key",
+            "state_event"
+          ]
+        }
+      },
+      {
+        "id": "preview_rule_run",
+        "title": "执行固定规则与状态检查",
+        "effect": "read",
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "run": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "source_indices": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 99
+                  },
+                  "maxItems": 100
+                },
+                "state_event_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "maxItems": 500
+                },
+                "ruleset": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    "version": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    "duplicate_min_chars": {
+                      "type": "integer",
+                      "minimum": 2,
+                      "maximum": 200
+                    },
+                    "max_chars": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 1000000
+                    },
+                    "dictionary": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "term": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "replacement": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "source": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 500
+                          },
+                          "exceptions": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 200
+                            },
+                            "maxItems": 100
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "term",
+                          "replacement",
+                          "source",
+                          "exceptions"
+                        ]
+                      },
+                      "maxItems": 300
+                    },
+                    "punctuation": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "version",
+                    "duplicate_min_chars",
+                    "max_chars",
+                    "dictionary",
+                    "punctuation"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "source_indices",
+                "state_event_ids",
+                "ruleset"
+              ]
+            }
+          },
+          "required": [
+            "object_id",
+            "run"
+          ]
+        }
+      },
+      {
+        "id": "put_rule_run",
+        "title": "保存可重现规则运行",
+        "effect": "managed_write",
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "expected_revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "expected_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "operation_key": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "run": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "source_indices": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 99
+                  },
+                  "maxItems": 100
+                },
+                "state_event_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "maxItems": 500
+                },
+                "ruleset": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    "version": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    "duplicate_min_chars": {
+                      "type": "integer",
+                      "minimum": 2,
+                      "maximum": 200
+                    },
+                    "max_chars": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 1000000
+                    },
+                    "dictionary": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "term": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "replacement": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "source": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 500
+                          },
+                          "exceptions": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 200
+                            },
+                            "maxItems": 100
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "term",
+                          "replacement",
+                          "source",
+                          "exceptions"
+                        ]
+                      },
+                      "maxItems": 300
+                    },
+                    "punctuation": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "version",
+                    "duplicate_min_chars",
+                    "max_chars",
+                    "dictionary",
+                    "punctuation"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "source_indices",
+                "state_event_ids",
+                "ruleset"
+              ]
+            }
+          },
+          "required": [
+            "object_id",
+            "expected_revision",
+            "expected_sha256",
+            "operation_key",
+            "run"
+          ]
+        }
+      },
+      {
+        "id": "get_rule_run",
+        "title": "重现固定规则运行",
+        "effect": "read",
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "run_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          },
+          "required": [
+            "object_id",
+            "run_id"
+          ]
+        }
+      },
+      {
+        "id": "preview_recheck",
+        "title": "比较新旧运行与问题",
+        "effect": "read",
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "old_run_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "run": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "source_indices": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 99
+                  },
+                  "maxItems": 100
+                },
+                "state_event_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "maxItems": 500
+                },
+                "ruleset": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    "version": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    "duplicate_min_chars": {
+                      "type": "integer",
+                      "minimum": 2,
+                      "maximum": 200
+                    },
+                    "max_chars": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 1000000
+                    },
+                    "dictionary": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "term": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "replacement": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "source": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 500
+                          },
+                          "exceptions": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 200
+                            },
+                            "maxItems": 100
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "term",
+                          "replacement",
+                          "source",
+                          "exceptions"
+                        ]
+                      },
+                      "maxItems": 300
+                    },
+                    "punctuation": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "version",
+                    "duplicate_min_chars",
+                    "max_chars",
+                    "dictionary",
+                    "punctuation"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "source_indices",
+                "state_event_ids",
+                "ruleset"
+              ]
+            }
+          },
+          "required": [
+            "object_id",
+            "old_run_id",
+            "run"
+          ]
+        }
+      },
+      {
+        "id": "save_depth",
+        "title": "保存明确专业深化结构",
+        "effect": "managed_write",
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "expected_revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "expected_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "operation_key": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "depth": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "version": {
+                  "const": 1
+                },
+                "state_events": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "entity_ref": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "order": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 1000000
+                      },
+                      "layer": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "branch": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "basis": {
+                        "enum": [
+                          "observed",
+                          "planned",
+                          "hypothesis"
+                        ]
+                      },
+                      "kind": {
+                        "enum": [
+                          "balance",
+                          "item",
+                          "condition",
+                          "knowledge"
+                        ]
+                      },
+                      "action": {
+                        "enum": [
+                          "set",
+                          "add",
+                          "acquire",
+                          "transfer",
+                          "destroy",
+                          "assert",
+                          "learn",
+                          "believe",
+                          "forget",
+                          "use"
+                        ]
+                      },
+                      "key": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "number": {
+                        "anyOf": [
+                          {
+                            "type": "number",
+                            "minimum": -1000000000,
+                            "maximum": 1000000000
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "value": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 1000
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "unit": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "from": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "to": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "exception": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 4000
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "evidence": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "source_index": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 99
+                            },
+                            "byte_start": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 100000000
+                            },
+                            "byte_end": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 100000000
+                            },
+                            "quote": {
+                              "type": "string",
+                              "minLength": 0,
+                              "maxLength": 16000
+                            }
+                          },
+                          "required": [
+                            "source_index",
+                            "byte_start",
+                            "byte_end",
+                            "quote"
+                          ]
+                        },
+                        "maxItems": 100
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "entity_ref",
+                      "order",
+                      "layer",
+                      "branch",
+                      "basis",
+                      "kind",
+                      "action",
+                      "key",
+                      "number",
+                      "value",
+                      "unit",
+                      "from",
+                      "to",
+                      "exception",
+                      "evidence"
+                    ]
+                  },
+                  "maxItems": 1000
+                },
+                "runs": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "source_indices": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 99
+                        },
+                        "maxItems": 100
+                      },
+                      "state_event_ids": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 100
+                        },
+                        "maxItems": 500
+                      },
+                      "ruleset": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "version": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "duplicate_min_chars": {
+                            "type": "integer",
+                            "minimum": 2,
+                            "maximum": 200
+                          },
+                          "max_chars": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 1000000
+                          },
+                          "dictionary": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 100
+                                },
+                                "term": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 100
+                                },
+                                "replacement": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 100
+                                },
+                                "source": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 500
+                                },
+                                "exceptions": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 200
+                                  },
+                                  "maxItems": 100
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "term",
+                                "replacement",
+                                "source",
+                                "exceptions"
+                              ]
+                            },
+                            "maxItems": 300
+                          },
+                          "punctuation": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "version",
+                          "duplicate_min_chars",
+                          "max_chars",
+                          "dictionary",
+                          "punctuation"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "source_indices",
+                      "state_event_ids",
+                      "ruleset"
+                    ]
+                  },
+                  "maxItems": 200
+                },
+                "basis_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "owner_plugin_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "object_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "revision": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 1000000
+                      },
+                      "sha256": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9]{64}$"
+                      }
+                    },
+                    "required": [
+                      "owner_plugin_id",
+                      "object_id",
+                      "revision",
+                      "sha256"
+                    ]
+                  },
+                  "maxItems": 100
+                }
+              },
+              "required": [
+                "version",
+                "state_events",
+                "runs"
+              ]
+            }
+          },
+          "required": [
+            "object_id",
+            "expected_revision",
+            "expected_sha256",
+            "operation_key",
+            "depth"
+          ]
+        }
+      },
+      {
+        "id": "inspect_basis",
+        "title": "读取同作品固定专业依据",
+        "effect": "read",
+        "input_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "object_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "basis_index": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 99
+            }
+          },
+          "required": [
+            "object_id",
+            "basis_index"
+          ]
+        }
       }
     ],
     "skills": [
       {
         "id": "novel-review",
         "name": "hetu-novel-review",
-        "description": "通过河图公开机器入口完成小说审校的固定依据、专业维护、审阅与接续。",
+        "description": "在河图中审校小说，执行有据中文句段与词表检查、人物和物品状态规则，保存固定运行并逐项复核新稿。",
         "entry": "skills/hetu-novel-review/SKILL.md"
       }
     ]

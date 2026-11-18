@@ -1,3 +1,4 @@
+import { DepthView } from "./depth.tsx";
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import manifest from "../../contracts/plugin-manifest.json" with { type: "json" };
@@ -47,6 +48,7 @@ const tabsets: Record<string, [string, string][]> = {
     ["issues", "问题清单"],
     ["checks", "检查结论"],
     ["rules", "规则建议"],
+    ["depth", "规则运行"],
   ],
 };
 async function invoke(action: string, input: any = {}) {
@@ -306,15 +308,29 @@ function App() {
         </section>
       ) : (
         <>
-          {p[tab]
+          {(Array.isArray(p[tab])?p[tab]:[])
             .filter((v: any) => !query || canonical(v).includes(query))
             .map(article)}
-          {!p[tab].length && (
+          {!(Array.isArray(p[tab])?p[tab]:[]).length && (
             <Empty text="暂无结论；请让Agent按六域和固定来源审读，无法判断时保留说明。" />
           )}
         </>
       );
   }
+  if (p && tab === "depth")
+    content = (
+      <DepthView
+        p={p}
+        invoke={(a, i) =>
+          invoke(a, {
+            object_id: record!.object.object_id,
+            revision: record!.object.revision,
+            ...i,
+          })
+        }
+        onError={(e) => setError(String(e))}
+      />
+    );
   return (
     <div className="app">
       <header>

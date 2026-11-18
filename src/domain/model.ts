@@ -1,3 +1,4 @@
+import { validateDepth } from "./depth.ts";
 import manifest from "../../contracts/plugin-manifest.json" with { type: "json" };
 import {
   canonical,
@@ -30,6 +31,7 @@ export function validateAction(action: string, input: unknown) {
 export function validate(p: any) {
   const f = (validators as any).project;
   need(f(p), "专业数据不符合Schema：" + JSON.stringify(f.errors));
+  validateDepth(p);
   for (const [k, list] of Object.entries(p))
     if (
       Array.isArray(list) &&

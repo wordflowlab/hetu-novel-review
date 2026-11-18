@@ -1,7 +1,7 @@
 {
-  "date": "2026-11-17T12:41:27.136Z",
+  "date": "2026-11-18T05:23:22.462Z",
   "platform": "darwin arm64",
-  "package_sha256": "bb7078c860d39ee684d0b028c9db4ddd55db3182574e55f7a72608b9b31c2bb9",
+  "package_sha256": "bef126202cb013c8cad35d69ea7596370f6469491b8d57703cd0d45bb6249591",
   "actions": [
     "skills.read",
     "save_project",
@@ -14,6 +14,12 @@
     "run_local_checks",
     "get_coverage",
     "build_review_context",
+    "save_depth",
+    "put_state_event",
+    "preview_rule_run",
+    "put_rule_run",
+    "get_rule_run",
+    "preview_recheck",
     "compare_versions",
     "export_project",
     "get_project"
