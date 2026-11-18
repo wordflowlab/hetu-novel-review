@@ -1,5 +1,5 @@
 import { _electron as electron, expect, test } from "@playwright/test";
-import { readFile } from "node:fs/promises";
+import { readFile,writeFile } from "node:fs/promises";
 import { createRequire } from "node:module";
 import path from "node:path";
 import manifest from "../../contracts/plugin-manifest.json" with { type: "json" };
