@@ -208,11 +208,9 @@ test("真实Electron专业工作面、AI交接、固定导出、冲突与重开"
     }
     await buttons[0].click();
     await page.emulateMedia({ reducedTransparency: "no-preference",contrast:"no-preference",forcedColors:"none" });
-    expect(
-      await page.evaluate(
-        () => getComputedStyle(document.body).backgroundImage,
-      ),
-    ).toContain("gradient");
+    const material=await page.evaluate(()=>({background:getComputedStyle(document.body).backgroundImage,body_style:document.body.getAttribute("style"),root_style:document.documentElement.getAttribute("style"),workbench:getComputedStyle(document.documentElement).getPropertyValue("--workbench-background"),jade:getComputedStyle(document.documentElement).getPropertyValue("--wash-jade"),reduce:matchMedia("(prefers-reduced-transparency:reduce)").matches,contrast:matchMedia("(prefers-contrast:more)").matches,forced:matchMedia("(forced-colors:active)").matches,supports:CSS.supports("background",getComputedStyle(document.documentElement).getPropertyValue("--workbench-background"))}));
+    await writeFile(info.outputPath("material.json"),JSON.stringify(material,null,2));
+    expect(material.background,JSON.stringify(material)).toContain("gradient");
     await page.getByRole("button", { name: "让AI处理", exact: true }).focus();
     await expect(
       page.getByRole("button", { name: "让AI处理", exact: true }),
