@@ -171,3 +171,13 @@ test("NRD-12 complete new actions preserve fixed records", async () => {
     ev,
   );
 });
+
+test("器物借还和销毁后再流转分别检查",()=>{
+ const a=p(),event=(id:string,order:number,action:string,from:string|null,to:string|null)=>({...state(id,"item",action,ev),entity_ref:"letter",key:"holder",number:null,unit:null,order,from,to});
+ a.depth.state_events=[event("get",0,"acquire",null,"lin"),event("borrow",1,"transfer","lin","chen"),event("return",2,"transfer","chen","lin"),event("destroy",3,"destroy","lin",null),event("again",4,"transfer",null,"chen")];
+ const r=runRules(a,run(a.depth.state_events.map((e:any)=>e.id)),[{content:text}]);assert.equal(r.results.find(x=>x.rule==="state:return").status,"pass");assert.equal(r.results.find(x=>x.rule==="state:again").status,"finding");
+});
+test("人物死亡复生与遗忘后使用均需具体依据",()=>{
+ const a=p();a.depth.state_events=[{...state("dead","condition","set",ev),key:"life",number:null,unit:null,value:"dead",order:0},{...state("alive","condition","set",ev),key:"life",number:null,unit:null,value:"alive",order:1},{...state("forget","knowledge","forget",ev),key:"code",number:null,unit:null,order:2},{...state("use","knowledge","use",ev),key:"code",number:null,unit:null,order:3}];
+ const r=runRules(a,run(a.depth.state_events.map((e:any)=>e.id)),[{content:text}]);assert.equal(r.results.find(x=>x.rule==="state:alive").status,"finding");assert.equal(r.results.find(x=>x.rule==="state:use").status,"finding");
+});

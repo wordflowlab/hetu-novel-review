@@ -249,9 +249,9 @@ export function runRules(p: any, run: any, sources: any[]) {
         if (value === undefined) {
           status = "inconclusive";
           message = "原持有人未知";
-        } else if (value !== e.from) {
+        } else if (value === null || value !== e.from) {
           status = "finding";
-          message = "转出方与已知持有人不符";
+          message = "物品已销毁或转出方与已知持有人不符";
         }
         state.set(key, e.action === "destroy" ? null : e.to);
       }
